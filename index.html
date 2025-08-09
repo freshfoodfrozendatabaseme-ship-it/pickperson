@@ -78,17 +78,24 @@
       const data = {};
       formData.forEach((value, key) => data[key] = value);
 
-      fetch("https://script.google.com/macros/s/AKfycbzhIaXCRfWvZB8MfLlCuQ6N54ZHD0PTvt-8O6bI8iOBumtG27dDLqark3Gf43sx1qB7/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbxMr1hvPuwPPe3uoToLfkJ-ZezXSxy-pvwHJ8FUiLPmzevG09htEwFqVdFZiSNwCrwW/exec", {
         method: "POST",
+        mode: "cors", // เปิดใช้งาน CORS
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
       })
-      .then(res => res.text())
+      .then(res => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.text();
+      })
       .then(response => {
         alert("บันทึกสำเร็จแล้ว");
         e.target.reset();
       })
-      .catch(err => alert("เกิดข้อผิดพลาด: " + err));
+      .catch(err => {
+        alert("เกิดข้อผิดพลาด: " + err);
+        console.error(err);
+      });
     });
   </script>
 </body>
